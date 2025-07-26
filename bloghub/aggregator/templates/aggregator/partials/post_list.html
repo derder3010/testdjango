@@ -1,0 +1,141 @@
+<!-- Posts Grid -->
+<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {% for post in page_obj %}
+        <article class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+            <!-- Thumbnail -->
+            {% if post.thumbnail_url %}
+                <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                    <img 
+                        src="{{ post.thumbnail_url }}" 
+                        alt="{{ post.title }}"
+                        class="w-full h-48 object-cover"
+                        loading="lazy"
+                        onerror="this.parent.style.display='none'"
+                    >
+                </div>
+            {% endif %}
+            
+            <!-- Content -->
+            <div class="p-6">
+                <!-- Blog Source -->
+                <div class="flex items-center mb-3">
+                    {% if post.blog_source.logo_url %}
+                        <img 
+                            src="{{ post.blog_source.logo_url }}" 
+                            alt="{{ post.blog_source.name }}"
+                            class="w-6 h-6 rounded-full mr-2"
+                            onerror="this.style.display='none'"
+                        >
+                    {% endif %}
+                    <span class="text-sm text-blue-600 font-medium">{{ post.blog_source.name }}</span>
+                    <span class="text-gray-400 mx-2">•</span>
+                    <time class="text-sm text-gray-500">
+                        {{ post.published_date|date:"d/m/Y" }}
+                    </time>
+                </div>
+                
+                <!-- Title -->
+                <h2 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">
+                    <a 
+                        href="{{ post.link }}" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="hover:text-blue-600 transition-colors"
+                    >
+                        {{ post.title }}
+                    </a>
+                </h2>
+                
+                <!-- Excerpt -->
+                {% if post.short_excerpt %}
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                        {{ post.short_excerpt }}
+                    </p>
+                {% endif %}
+                
+                <!-- Read More -->
+                <a 
+                    href="{{ post.link }}" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                    Đọc tiếp
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                </a>
+            </div>
+        </article>
+    {% empty %}
+        <!-- Empty State -->
+        <div class="col-span-full">
+            <div class="text-center py-12">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Không có bài viết nào</h3>
+                <p class="text-gray-500">
+                    {% if request.GET.search %}
+                        Không tìm thấy bài viết nào phù hợp với từ khóa "{{ request.GET.search }}"
+                    {% elif request.GET.blog_source %}
+                        Blog này chưa có bài viết nào
+                    {% else %}
+                        Hãy thêm blog nguồn và crawl dữ liệu để bắt đầu
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if page_obj.has_other_pages %}
+    <div class="mt-8 flex justify-center">
+        <nav class="flex items-center space-x-2">
+            {% if page_obj.has_previous %}
+                <button 
+                    hx-get="{% url 'aggregator:load_more_posts' %}?page={{ page_obj.previous_page_number }}"
+                    hx-target="#posts-container"
+                    hx-include="[name='search'], [name='blog_source']"
+                    hx-indicator="#loading-indicator"
+                    class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    ← Trước
+                </button>
+            {% endif %}
+            
+            <span class="px-4 py-2 text-sm text-gray-700">
+                Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <button 
+                    hx-get="{% url 'aggregator:load_more_posts' %}?page={{ page_obj.next_page_number }}"
+                    hx-target="#posts-container"
+                    hx-include="[name='search'], [name='blog_source']"
+                    hx-indicator="#loading-indicator"
+                    class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Tiếp →
+                </button>
+            {% endif %}
+        </nav>
+    </div>
+{% endif %}
+
+<style>
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
