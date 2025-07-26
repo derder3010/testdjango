@@ -1,4 +1,4 @@
-/* Custom styles for BlogHub - Flat Design */
+/* Custom styles for BlogHub - Flat Design + Masonry */
 
 /* Loading animations */
 .htmx-indicator {
@@ -45,6 +45,93 @@
     overflow: hidden;
 }
 
+.line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Masonry Layout Enhancements */
+.masonry-grid {
+    column-count: 1;
+    column-gap: 8px;
+    column-fill: balance;
+}
+
+@media (min-width: 640px) {
+    .masonry-grid { 
+        column-count: 2; 
+        column-gap: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .masonry-grid { 
+        column-count: 3; 
+        column-gap: 12px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .masonry-grid { 
+        column-count: 4; 
+        column-gap: 12px;
+    }
+}
+
+@media (min-width: 1536px) {
+    .masonry-grid { 
+        column-count: 5; 
+        column-gap: 12px;
+    }
+}
+
+.masonry-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 8px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    vertical-align: top;
+}
+
+/* Smooth loading animation for new items */
+.masonry-item {
+    opacity: 0;
+    animation: slideInUp 0.4s ease-out forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stagger animation for multiple items */
+.masonry-item:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+.masonry-item:nth-child(even) {
+    animation-delay: 0.2s;
+}
+
+/* Infinity scroll improvements */
+#scroll-trigger {
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+#scroll-trigger:hover {
+    opacity: 1;
+}
+
 /* Focus states for accessibility */
 .focus-ring:focus {
     outline: 2px solid #3b82f6;
@@ -60,6 +147,14 @@
     .mobile-full {
         width: 100%;
     }
+    
+    .masonry-grid {
+        column-gap: 6px;
+    }
+    
+    .masonry-item {
+        margin-bottom: 6px;
+    }
 }
 
 /* Print styles */
@@ -70,6 +165,10 @@
     
     body {
         background: white !important;
+    }
+    
+    .masonry-grid {
+        column-count: 2 !important;
     }
 }
 
@@ -91,7 +190,23 @@ button:focus, input:focus, select:focus {
     outline-offset: 0;
 }
 
-/* Remove any lingering transitions for true flat feel */
-.no-transition * {
-    transition: none !important;
+/* Prevent layout shifts during loading */
+.masonry-grid {
+    min-height: 200px;
+}
+
+/* Optimize image loading */
+img[loading="lazy"] {
+    transition: opacity 0.3s;
+}
+
+img[loading="lazy"]:not([src]) {
+    opacity: 0;
+}
+
+/* Better text rendering */
+.masonry-item h2, .masonry-item p {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
