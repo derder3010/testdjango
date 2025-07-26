@@ -4,13 +4,13 @@
 
 {% block content %}
 <!-- Hero Section -->
-<div class="bg-blue-600 p-8 text-white mb-8">
-    <h1 class="text-3xl font-bold mb-2">Chào mừng đến với BlogHub! 👋</h1>
-    <p class="text-blue-100 text-lg">Tổng hợp và khám phá nội dung từ các blog cá nhân hàng đầu</p>
+<div class="bg-blue-600 p-6 text-white mb-6">
+    <h1 class="text-2xl font-bold mb-2">Chào mừng đến với BlogHub! 👋</h1>
+    <p class="text-blue-100">Tổng hợp và khám phá nội dung từ các blog cá nhân hàng đầu</p>
 </div>
 
 <!-- Filters Section -->
-<div class="bg-white border border-gray-300 p-6 mb-8">
+<div class="bg-white border border-gray-300 p-4 mb-6">
     <div class="flex flex-col md:flex-row gap-4">
         <!-- Search -->
         <div class="flex-1">
@@ -22,11 +22,6 @@
                 value="{{ search_query }}"
                 placeholder="Tìm kiếm theo tiêu đề hoặc nội dung..."
                 class="w-full px-4 py-2 border border-gray-400 focus:border-blue-600 focus:outline-none"
-                hx-get="{% url 'aggregator:load_more_posts' %}"
-                hx-trigger="keyup changed delay:500ms"
-                hx-target="#posts-container"
-                hx-include="[name='blog_source']"
-                hx-indicator="#loading-indicator"
             >
         </div>
         
@@ -37,11 +32,6 @@
                 name="blog_source" 
                 id="blog_source"
                 class="w-full px-4 py-2 border border-gray-400 focus:border-blue-600 focus:outline-none"
-                hx-get="{% url 'aggregator:load_more_posts' %}"
-                hx-trigger="change"
-                hx-target="#posts-container"
-                hx-include="[name='search']"
-                hx-indicator="#loading-indicator"
             >
                 <option value="">Tất cả blog</option>
                 {% for source in blog_sources %}
@@ -54,30 +44,147 @@
     </div>
 </div>
 
-<!-- Posts Container -->
-<div id="posts-container">
+<!-- Posts Masonry Container -->
+<div id="posts-masonry" class="masonry-grid">
     {% include 'aggregator/partials/post_list.html' %}
+</div>
+
+<!-- Infinity Scroll Trigger -->
+<div id="scroll-trigger" 
+     hx-get="{% url 'aggregator:load_more_posts' %}"
+     hx-trigger="intersect once"
+     hx-target="#posts-masonry"
+     hx-swap="beforeend"
+     hx-include="[name='search'], [name='blog_source']"
+     hx-indicator="#loading-indicator"
+     class="h-20 flex items-center justify-center">
+    <div class="text-gray-500 text-sm">Đang tải thêm bài viết...</div>
+</div>
+
+<!-- End of content marker -->
+<div id="end-marker" class="hidden text-center py-8 text-gray-500">
+    <p>🎉 Bạn đã xem hết tất cả bài viết!</p>
 </div>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// Handle form submissions for filters
-document.addEventListener('htmx:configRequest', function(evt) {
-    // Include current filter values
+let currentPage = 1;
+let isLoading = false;
+let hasMorePosts = true;
+
+// Handle search and filter changes
+function handleFilterChange() {
+    if (isLoading) return;
+    
+    isLoading = true;
+    currentPage = 1;
+    hasMorePosts = true;
+    
+    // Hide end marker
+    document.getElementById('end-marker').classList.add('hidden');
+    
     const search = document.getElementById('search').value;
     const blogSource = document.getElementById('blog_source').value;
     
-    if (search) {
-        evt.detail.parameters['search'] = search;
-    }
-    if (blogSource) {
-        evt.detail.parameters['blog_source'] = blogSource;
-    }
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (blogSource) params.append('blog_source', blogSource);
+    params.append('page', currentPage);
     
-    // Always reset to page 1 for filters
-    evt.detail.parameters['page'] = 1;
+    // Clear current posts
+    document.getElementById('posts-masonry').innerHTML = '';
+    
+    // Load new posts
+    fetch(`{% url 'aggregator:load_more_posts' %}?${params.toString()}`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('posts-masonry').innerHTML = html;
+            setupScrollTrigger();
+            isLoading = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            isLoading = false;
+        });
+}
+
+// Setup infinity scroll trigger
+function setupScrollTrigger() {
+    const trigger = document.getElementById('scroll-trigger');
+    if (!trigger || !hasMorePosts) return;
+    
+    // Remove old trigger and create new one
+    trigger.remove();
+    
+    const newTrigger = document.createElement('div');
+    newTrigger.id = 'scroll-trigger';
+    newTrigger.className = 'h-20 flex items-center justify-center';
+    newTrigger.innerHTML = '<div class="text-gray-500 text-sm">Đang tải thêm bài viết...</div>';
+    
+    // Add HTMX attributes
+    const search = document.getElementById('search').value;
+    const blogSource = document.getElementById('blog_source').value;
+    
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (blogSource) params.append('blog_source', blogSource);
+    params.append('page', currentPage + 1);
+    
+    newTrigger.setAttribute('hx-get', `{% url 'aggregator:load_more_posts' %}?${params.toString()}`);
+    newTrigger.setAttribute('hx-trigger', 'intersect once');
+    newTrigger.setAttribute('hx-target', '#posts-masonry');
+    newTrigger.setAttribute('hx-swap', 'beforeend');
+    
+    document.getElementById('posts-masonry').parentNode.insertBefore(
+        newTrigger, 
+        document.getElementById('end-marker')
+    );
+    
+    // Reinitialize HTMX for new element
+    htmx.process(newTrigger);
+}
+
+// Handle successful HTMX requests
+document.addEventListener('htmx:afterRequest', function(event) {
+    if (event.target.id === 'scroll-trigger') {
+        currentPage++;
+        
+        // Check if we got any new posts
+        const response = event.detail.xhr.responseText;
+        if (response.trim() === '' || response.includes('Không có bài viết nào')) {
+            hasMorePosts = false;
+            document.getElementById('scroll-trigger').remove();
+            document.getElementById('end-marker').classList.remove('hidden');
+        } else {
+            setupScrollTrigger();
+        }
+        
+        isLoading = false;
+    }
+});
+
+// Add event listeners for filters
+document.getElementById('search').addEventListener('input', debounce(handleFilterChange, 500));
+document.getElementById('blog_source').addEventListener('change', handleFilterChange);
+
+// Debounce function for search
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    setupScrollTrigger();
 });
 </script>
 {% endblock %}

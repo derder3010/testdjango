@@ -11,6 +11,9 @@
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.8"></script>
     
+    <!-- Masonry Layout -->
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    
     <!-- Custom CSS -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -23,6 +26,42 @@
         .htmx-indicator { opacity: 0; }
         .htmx-request .htmx-indicator { opacity: 1; }
         .htmx-request.htmx-indicator { opacity: 1; }
+        
+        /* Masonry layout styles */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 12px;
+            padding: 0;
+        }
+        
+        @media (min-width: 640px) {
+            .masonry-grid { column-count: 2; }
+        }
+        
+        @media (min-width: 1024px) {
+            .masonry-grid { column-count: 3; }
+        }
+        
+        @media (min-width: 1280px) {
+            .masonry-grid { column-count: 4; }
+        }
+        
+        .masonry-item {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 12px;
+            break-inside: avoid;
+        }
+        
+        /* Smooth loading */
+        .masonry-item {
+            opacity: 0;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">

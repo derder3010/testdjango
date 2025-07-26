@@ -28,8 +28,8 @@ def index(request):
             Q(excerpt__icontains=search_query)
         )
     
-    # Pagination
-    paginator = Paginator(posts, 20)
+    # Pagination for masonry layout - more items per page
+    paginator = Paginator(posts, 30)  # Increased from 20 to 30
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
     
@@ -47,7 +47,7 @@ def index(request):
 
 
 def load_more_posts(request):
-    """HTMX endpoint để tải thêm bài viết"""
+    """HTMX endpoint để tải thêm bài viết cho infinity scroll"""
     page_number = request.GET.get('page', 1)
     blog_source_id = request.GET.get('blog_source')
     search_query = request.GET.get('search', '')
@@ -64,8 +64,13 @@ def load_more_posts(request):
             Q(excerpt__icontains=search_query)
         )
     
-    paginator = Paginator(posts, 20)
+    # Use same pagination size as index
+    paginator = Paginator(posts, 30)
     page_obj = paginator.get_page(page_number)
+    
+    # For infinity scroll, return empty if no more pages
+    if not page_obj.has_next() and page_number != '1' and not page_obj.object_list:
+        return render(request, 'aggregator/partials/empty.html')
     
     return render(request, 'aggregator/partials/post_list.html', {
         'page_obj': page_obj

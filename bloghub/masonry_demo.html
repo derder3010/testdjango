@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogHub - Masonry Layout Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Flat Design + Masonry */
+        * {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        /* Masonry Layout */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 8px;
+            column-fill: balance;
+        }
+        
+        @media (min-width: 640px) {
+            .masonry-grid { column-count: 2; column-gap: 10px; }
+        }
+        
+        @media (min-width: 1024px) {
+            .masonry-grid { column-count: 3; column-gap: 12px; }
+        }
+        
+        @media (min-width: 1280px) {
+            .masonry-grid { column-count: 4; column-gap: 12px; }
+        }
+        
+        .masonry-item {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 8px;
+            break-inside: avoid;
+            page-break-inside: avoid;
+            vertical-align: top;
+            opacity: 0;
+            animation: slideInUp 0.4s ease-out forwards;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .masonry-item:nth-child(odd) { animation-delay: 0.1s; }
+        .masonry-item:nth-child(even) { animation-delay: 0.2s; }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .line-clamp-4 {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-300">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3">
+                    <span class="text-white font-bold">B</span>
+                </div>
+                <h1 class="text-xl font-bold text-gray-900">BlogHub - Masonry Layout</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto p-4">
+        <!-- Hero -->
+        <div class="bg-blue-600 p-6 text-white mb-6">
+            <h1 class="text-2xl font-bold mb-2">Masonry Layout + Infinity Scroll ✨</h1>
+            <p class="text-blue-100">Cards có chiều cao khác nhau, sắp xếp như gạch</p>
+        </div>
+
+        <!-- Filter -->
+        <div class="bg-white border border-gray-300 p-4 mb-6">
+            <div class="flex gap-4">
+                <input 
+                    type="text" 
+                    placeholder="Tìm kiếm..."
+                    class="flex-1 px-4 py-2 border border-gray-400 focus:border-blue-600 focus:outline-none"
+                >
+                <select class="px-4 py-2 border border-gray-400 focus:border-blue-600 focus:outline-none">
+                    <option>Tất cả blog</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Masonry Grid -->
+        <div class="masonry-grid">
+            <!-- Card 1 - Short -->
+            <article class="masonry-item bg-white border border-gray-300">
+                <div class="p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xs text-blue-600 font-medium">Tech Blog</span>
+                        <span class="text-gray-400 mx-1">•</span>
+                        <span class="text-xs text-gray-500">25/01/2024</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-gray-900 mb-2">Short Card</h2>
+                    <p class="text-gray-600 text-xs mb-3">Đây là card ngắn.</p>
+                    <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                </div>
+            </article>
+
+            <!-- Card 2 - With Image -->
+            <article class="masonry-item bg-white border border-gray-300">
+                <div class="bg-gray-200 h-32"></div>
+                <div class="p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xs text-blue-600 font-medium">Design Blog</span>
+                        <span class="text-gray-400 mx-1">•</span>
+                        <span class="text-xs text-gray-500">24/01/2024</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-gray-900 mb-2 line-clamp-3">Card với ảnh và tiêu đề dài hơn để test line clamp</h2>
+                    <p class="text-gray-600 text-xs mb-3 line-clamp-4">Mô tả dài hơn để test line clamp. Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+                    <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                </div>
+            </article>
+
+            <!-- Card 3 - Tall -->
+            <article class="masonry-item bg-white border border-gray-300">
+                <div class="p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xs text-blue-600 font-medium">Dev Blog</span>
+                        <span class="text-gray-400 mx-1">•</span>
+                        <span class="text-xs text-gray-500">23/01/2024</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-gray-900 mb-2">Tall Card</h2>
+                    <p class="text-gray-600 text-xs mb-3">
+                        Đây là card cao hơn với nhiều nội dung. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </p>
+                    <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                </div>
+            </article>
+
+            <!-- Card 4 - Medium -->
+            <article class="masonry-item bg-white border border-gray-300">
+                <div class="bg-gray-200 h-24"></div>
+                <div class="p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xs text-blue-600 font-medium">News</span>
+                        <span class="text-gray-400 mx-1">•</span>
+                        <span class="text-xs text-gray-500">22/01/2024</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-gray-900 mb-2">Medium Card</h2>
+                    <p class="text-gray-600 text-xs mb-3">Card có chiều cao trung bình với ảnh nhỏ hơn.</p>
+                    <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                </div>
+            </article>
+
+            <!-- Card 5 - No Image -->
+            <article class="masonry-item bg-white border border-gray-300">
+                <div class="p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xs text-blue-600 font-medium">Tutorial</span>
+                        <span class="text-gray-400 mx-1">•</span>
+                        <span class="text-xs text-gray-500">21/01/2024</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-gray-900 mb-2">Text Only Card</h2>
+                    <p class="text-gray-600 text-xs mb-3">Card chỉ có text, không có ảnh. Nội dung vừa phải.</p>
+                    <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                </div>
+            </article>
+
+            <!-- Card 6 - Extra Tall -->
+            <article class="masonry-item bg-white border border-gray-300">
+                <div class="bg-gray-200 h-40"></div>
+                <div class="p-4">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xs text-blue-600 font-medium">Feature</span>
+                        <span class="text-gray-400 mx-1">•</span>
+                        <span class="text-xs text-gray-500">20/01/2024</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-gray-900 mb-2">Extra Tall Card với ảnh lớn</h2>
+                    <p class="text-gray-600 text-xs mb-3">
+                        Card này rất cao với ảnh lớn và nhiều nội dung text. 
+                        Test để xem masonry layout có hoạt động tốt không.
+                        Lorem ipsum dolor sit amet consectetur.
+                    </p>
+                    <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                </div>
+            </article>
+
+            <!-- Add more cards dynamically here -->
+        </div>
+
+        <!-- Infinity Scroll Trigger -->
+        <div class="h-20 flex items-center justify-center mt-6">
+            <button onclick="loadMore()" class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 text-sm">
+                Tải thêm (Demo)
+            </button>
+        </div>
+
+        <!-- End Marker -->
+        <div id="end-marker" class="hidden text-center py-8 text-gray-500">
+            <p>🎉 Bạn đã xem hết tất cả bài viết!</p>
+        </div>
+    </div>
+
+    <script>
+        let loadCount = 0;
+        
+        function loadMore() {
+            loadCount++;
+            
+            if (loadCount >= 3) {
+                document.querySelector('button').style.display = 'none';
+                document.getElementById('end-marker').classList.remove('hidden');
+                return;
+            }
+            
+            const grid = document.querySelector('.masonry-grid');
+            
+            // Add more demo cards
+            for (let i = 0; i < 6; i++) {
+                const card = document.createElement('article');
+                card.className = 'masonry-item bg-white border border-gray-300';
+                card.innerHTML = `
+                    <div class="p-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-xs text-blue-600 font-medium">New Blog</span>
+                            <span class="text-gray-400 mx-1">•</span>
+                            <span class="text-xs text-gray-500">Hôm nay</span>
+                        </div>
+                        <h2 class="text-sm font-semibold text-gray-900 mb-2">Dynamic Card ${loadCount}-${i + 1}</h2>
+                        <p class="text-gray-600 text-xs mb-3">Card được tải động qua JavaScript. ${Math.random() > 0.5 ? 'Nội dung ngắn.' : 'Nội dung dài hơn để test chiều cao khác nhau của các card trong masonry layout.'}</p>
+                        <a href="#" class="text-blue-600 text-xs">Đọc tiếp →</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+        }
+    </script>
+</body>
+</html>
