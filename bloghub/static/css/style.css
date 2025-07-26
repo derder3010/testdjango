@@ -1,13 +1,8 @@
-/* Custom styles for BlogHub */
+/* Custom styles for BlogHub - Flat Design */
 
 /* Loading animations */
 .htmx-indicator {
     transition: opacity 0.3s;
-}
-
-/* Smooth hover effects */
-.transition-all {
-    transition: all 0.3s ease;
 }
 
 /* Custom scrollbar */
@@ -22,7 +17,6 @@
 
 ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
-    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -49,33 +43,6 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-}
-
-/* Card hover effects */
-.card-hover {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-/* Custom gradient backgrounds */
-.gradient-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Skeleton loading */
-.skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
 }
 
 /* Focus states for accessibility */
@@ -106,10 +73,25 @@
     }
 }
 
-/* Dark mode support (future enhancement) */
-@media (prefers-color-scheme: dark) {
-    .dark-auto {
-        background-color: #1f2937;
-        color: #f9fafb;
-    }
+/* Remove all rounded corners and shadows - enforce flat design */
+* {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Ensure borders are sharp */
+input, select, button, textarea {
+    border-radius: 0 !important;
+}
+
+/* Clean button styles */
+button:focus, input:focus, select:focus {
+    box-shadow: none !important;
+    outline: 2px solid #3b82f6;
+    outline-offset: 0;
+}
+
+/* Remove any lingering transitions for true flat feel */
+.no-transition * {
+    transition: none !important;
 }

@@ -25,15 +25,15 @@
         .htmx-request.htmx-indicator { opacity: 1; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-100 min-h-screen">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <header class="bg-white border-b border-gray-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{% url 'aggregator:index' %}" class="flex items-center">
-                        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <div class="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3">
                             <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -44,13 +44,13 @@
                 
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="{% url 'aggregator:index' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                    <a href="{% url 'aggregator:index' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
                         Trang chủ
                     </a>
-                    <a href="{% url 'aggregator:blog_sources' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                    <a href="{% url 'aggregator:blog_sources' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
                         Blog nguồn
                     </a>
-                    <a href="/admin/" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                    <a href="/admin/" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">
                         Quản trị
                     </a>
                 </nav>
@@ -74,7 +74,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-12">
+    <footer class="bg-white border-t border-gray-300 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="text-center text-gray-600">
                 <p>&copy; 2024 BlogHub - Tổng hợp nội dung từ các blog cá nhân</p>
@@ -87,12 +87,14 @@
 
     <!-- Loading indicator -->
     <div id="loading-indicator" class="htmx-indicator fixed top-4 right-4 z-50">
-        <div class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center">
-            <svg class="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Đang tải...
+        <div class="bg-blue-600 text-white px-4 py-2">
+            <div class="flex items-center">
+                <svg class="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Đang tải...
+            </div>
         </div>
     </div>
 
