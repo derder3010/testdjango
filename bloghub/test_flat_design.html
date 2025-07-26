@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogHub - Flat Design Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Flat Design Enforcer */
+        * {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-300">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3">
+                    <span class="text-white font-bold">B</span>
+                </div>
+                <h1 class="text-xl font-bold text-gray-900">BlogHub - Flat Design</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto p-4">
+        <!-- Hero -->
+        <div class="bg-blue-600 p-8 text-white mb-8">
+            <h1 class="text-3xl font-bold mb-2">Flat Design Test ✅</h1>
+            <p class="text-blue-100">Giao diện flat không có shadow, border radius</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white border border-gray-300 p-6 mb-8">
+            <h2 class="text-lg font-semibold mb-4">Filters & Search</h2>
+            <div class="flex gap-4">
+                <input 
+                    type="text" 
+                    placeholder="Tìm kiếm..."
+                    class="flex-1 px-4 py-2 border border-gray-400 focus:border-blue-600 focus:outline-none"
+                >
+                <select class="px-4 py-2 border border-gray-400 focus:border-blue-600 focus:outline-none">
+                    <option>Tất cả blog</option>
+                    <option>Blog 1</option>
+                    <option>Blog 2</option>
+                </select>
+                <button class="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700">
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+
+        <!-- Card Grid -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Card 1 -->
+            <article class="bg-white border border-gray-300">
+                <div class="bg-gray-200 h-48"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-sm text-blue-600 font-medium">Blog Tech</span>
+                        <span class="text-gray-400 mx-2">•</span>
+                        <span class="text-sm text-gray-500">25/01/2024</span>
+                    </div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">
+                        Tiêu đề bài viết dài để test line clamp trong flat design
+                    </h2>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Mô tả ngắn của bài viết để test giao diện flat design...
+                    </p>
+                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        Đọc tiếp →
+                    </a>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="bg-white border border-gray-300">
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-sm text-blue-600 font-medium">Dev Blog</span>
+                        <span class="text-gray-400 mx-2">•</span>
+                        <span class="text-sm text-gray-500">24/01/2024</span>
+                    </div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">
+                        Bài viết không có ảnh
+                    </h2>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Test card không có thumbnail image...
+                    </p>
+                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        Đọc tiếp →
+                    </a>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="bg-white border border-gray-300">
+                <div class="bg-gray-200 h-48"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-sm text-blue-600 font-medium">Design Blog</span>
+                        <span class="text-gray-400 mx-2">•</span>
+                        <span class="text-sm text-gray-500">23/01/2024</span>
+                    </div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">
+                        Card số 3
+                    </h2>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Test flat design với nhiều card...
+                    </p>
+                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        Đọc tiếp →
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center">
+            <div class="flex items-center space-x-2">
+                <button class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-400 hover:bg-gray-100">
+                    ← Trước
+                </button>
+                <span class="px-4 py-2 text-sm text-gray-700">
+                    Trang 1 / 5
+                </span>
+                <button class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-400 hover:bg-gray-100">
+                    Tiếp →
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-white border border-gray-300 p-6">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-blue-600 flex items-center justify-center mr-4">
+                        <span class="text-white text-sm">📝</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Tổng bài viết</p>
+                        <p class="text-2xl font-semibold text-gray-900">25</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-300 p-6">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-green-600 flex items-center justify-center mr-4">
+                        <span class="text-white text-sm">✅</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Blog nguồn</p>
+                        <p class="text-2xl font-semibold text-gray-900">5</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-300 p-6">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-purple-600 flex items-center justify-center mr-4">
+                        <span class="text-white text-sm">🔄</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Cập nhật</p>
+                        <p class="text-2xl font-semibold text-gray-900">Hôm nay</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-300 mt-12 p-8 text-center text-gray-600">
+        <p>BlogHub - Flat Design ✅ No shadows, no rounded corners</p>
+    </footer>
+</body>
+</html>
