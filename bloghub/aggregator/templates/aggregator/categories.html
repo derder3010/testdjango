@@ -1,0 +1,73 @@
+{% extends 'aggregator/base.html' %}
+
+{% block title %}Danh mục - BlogHub{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-white border border-gray-300 p-6 mb-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-900">🏷️ Danh mục</h1>
+        <a href="{% url 'aggregator:index' %}" class="text-blue-600 text-sm hover:text-blue-700">← Về trang chủ</a>
+    </div>
+    <p class="text-gray-600 mt-2">Khám phá các chủ đề và lĩnh vực khác nhau</p>
+</div>
+
+<!-- Categories Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for category in categories %}
+    <article class="bg-white border border-gray-300 p-6 hover:border-blue-300">
+        <a href="{{ category.get_absolute_url }}" class="block">
+            <!-- Icon & Name -->
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 flex items-center justify-center" style="background-color: {{ category.color }};">
+                    {% if category.icon %}
+                        <i class="{{ category.icon }} text-white text-xl"></i>
+                    {% else %}
+                        <span class="text-white font-bold text-lg">{{ category.name|first|upper }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ category.name }}</h3>
+                    <p class="text-sm text-gray-500">{{ category.total_posts }} bài viết</p>
+                </div>
+            </div>
+            
+            <!-- Description -->
+            {% if category.description %}
+            <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ category.description }}</p>
+            {% endif %}
+            
+            <!-- Stats -->
+            <div class="flex items-center justify-between">
+                <span class="text-xs px-2 py-1 text-white" style="background-color: {{ category.color }};">
+                    {{ category.total_posts }} bài viết
+                </span>
+                <span class="text-blue-600 text-sm hover:text-blue-700">Xem chi tiết →</span>
+            </div>
+        </a>
+    </article>
+    {% empty %}
+    <!-- Empty State -->
+    <div class="col-span-full bg-white border border-gray-300 p-12 text-center">
+        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">Chưa có danh mục nào</h3>
+        <p class="text-gray-500 mb-4">Hãy thêm danh mục để phân loại nội dung</p>
+        <a href="/admin/aggregator/category/add/" 
+           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 text-sm">
+            Thêm danh mục mới
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
+{% endblock %}
